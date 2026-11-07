@@ -1,0 +1,9 @@
+name: basic_schach
+services:
+  schach:
+    build: .
+    image: basic_schach:latest
+    container_name: basic_schach
+    ports:
+      - "8080:80"
+    restart: unless-stopped

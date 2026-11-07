@@ -1,0 +1,183 @@
+/* "Neues Spiel" screen */
+.newgame {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  min-height: 100vh;
+  background: var(--paper);
+}
+.newgame[hidden] { display: none; }
+
+/* ---- Poster ---- */
+.newgame__poster {
+  position: relative;
+  overflow: hidden;
+  background: var(--blue);
+  border-right: var(--line-strong) solid var(--ink);
+  min-height: 560px;
+}
+.newgame__poster > * { position: absolute; }
+.ng-circle {
+  width: 78%;
+  aspect-ratio: 1;
+  left: -14%;
+  top: 6%;
+  border-radius: 50%;
+  background: var(--yellow);
+}
+.ng-square {
+  width: 36%;
+  aspect-ratio: 1;
+  right: 8%;
+  top: 10%;
+  background: var(--red);
+}
+.ng-bar {
+  left: 0;
+  width: 100%;
+  top: 58%;
+  height: 14px;
+  background: var(--ink);
+}
+.ng-king { width: 30%; left: 18%; top: 20%; }
+.ng-knight { width: 22%; right: 15%; top: 14%; }
+.ng-king svg, .ng-knight svg { width: 100%; height: auto; }
+.ng-word {
+  left: var(--s6);
+  bottom: var(--s6);
+  color: var(--paper);
+}
+.ng-word__title {
+  font-size: clamp(72px, 9vw, 120px);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+}
+.ng-word__sub {
+  margin-top: var(--s3);
+  font-size: var(--fs-section);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+/* ---- Form ---- */
+.newgame__form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s6);
+  width: 100%;
+  max-width: 720px;
+  padding: var(--s8) var(--s9);
+}
+.newgame__back {
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: var(--line) solid var(--ink);
+}
+.newgame__back:hover { color: var(--red); border-color: var(--red); }
+.newgame__h1 {
+  font-size: var(--fs-display);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+.ng-field {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.ng-field legend {
+  padding: 0;
+  margin-bottom: var(--s3);
+  font-size: var(--fs-label);
+}
+.ng-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3); }
+
+.ng-mode { padding: 0 var(--s5); }
+
+.ng-color {
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s3) var(--s5);
+  min-width: 112px;
+}
+.ng-tile { display: block; width: 44px; height: 44px; }
+.ng-tile svg { width: 100%; height: 100%; }
+.ng-ico-paper { fill: var(--paper); stroke: var(--ink); stroke-width: 3; }
+.ng-ico-ink { fill: var(--ink); stroke: var(--ink); stroke-width: 3; }
+.ng-ico-frame { fill: none; stroke: var(--ink); stroke-width: 3; }
+
+/* Level squares */
+.ng-row--levels { gap: var(--s5); }
+.ng-levels { display: flex; gap: var(--s2); }
+.ng-level {
+  position: relative;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+.ng-level[aria-pressed],
+.ng-level[aria-pressed]:hover { background: var(--paper); }
+.ng-level.is-filled,
+.ng-level.is-filled:hover {
+  background: var(--blue);
+  color: var(--paper);
+}
+.ng-level[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 4px solid var(--yellow);
+  pointer-events: none;
+}
+.ng-level-text { font-weight: 600; }
+
+/* Time chips */
+.ng-chip { min-height: 44px; padding: 0 var(--s4); }
+
+.newgame__start {
+  margin-top: var(--s2);
+  min-height: 64px;
+  padding: 0 var(--s7);
+  font-size: 20px;
+  gap: var(--s4);
+}
+.newgame__start svg { width: 28px; height: 28px; }
+
+/* ---- Mobile: poster becomes a strip on top ---- */
+@media (max-width: 899px) {
+  .newgame { grid-template-columns: 1fr; grid-template-rows: auto 1fr; min-height: 100vh; }
+  .newgame__poster {
+    height: 220px;
+    min-height: 0;
+    border-right: 0;
+    border-bottom: var(--line-strong) solid var(--ink);
+  }
+  .ng-circle { width: auto; height: 120%; left: -8%; top: -10%; }
+  .ng-square { width: auto; height: 46%; right: 6%; top: 10%; }
+  .ng-bar { top: 62%; height: 8px; }
+  .ng-king { width: auto; height: 62%; left: 24%; top: 12%; }
+  .ng-king svg { height: 100%; width: auto; }
+  .ng-knight { width: auto; height: 42%; right: 22%; top: 8%; }
+  .ng-knight svg { height: 100%; width: auto; }
+  .ng-word { left: var(--s4); bottom: var(--s3); }
+  .ng-word__title { font-size: 44px; }
+  .ng-word__sub { margin-top: var(--s1); font-size: 11px; letter-spacing: 0.12em; }
+
+  .newgame__form { max-width: none; padding: var(--s6) var(--s4) var(--s8); gap: var(--s5); }
+  .ng-row--colors { gap: var(--s2); }
+  .ng-color { flex: 1 1 0; min-width: 0; padding: var(--s3) var(--s2); }
+  .ng-mode { flex: 1 1 0; justify-content: center; padding: 0 var(--s3); }
+  .ng-row--levels { gap: var(--s3); }
+  .ng-level { width: 48px; height: 48px; }
+  .newgame__start { width: 100%; justify-content: center; padding: 0 var(--s5); }
+}

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brett-Demo – Bauhaus Schach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/board.css">
+<link rel="stylesheet" href="../css/game.css">
+</head>
+<body>
+<div id="screen-game"></div>
+<script type="module">
+import { Panel } from '../js/ui/panel.js';
+import { BoardView } from '../js/ui/board-view.js';
+import { parseFEN, squareIndex } from '../js/engine/board.js';
+
+const state = parseFEN('r1bqk2r/ppp2ppp/2n2n2/3p4/2BPP3/5N2/PP1N1PPP/R2QK2R w KQkq d6 0 9');
+const sans = 'e4 e5 Sf3 Sc6 Lc4 Lc5 c3 Sf6 d4 exd4 cxd4 Lb4+ Ld2 Lxd2+ Sbxd2 d5'.split(' ');
+
+let flipped = false;
+const sq = squareIndex;
+const targets = ['a6', 'b5', 'b3', 'd3', 'e2', 'f1'].map((n) => ({ square: sq(n), capture: false }));
+targets.push({ square: sq('d5'), capture: true });
+
+const log = (name) => (...args) => console.log(name, ...args);
+
+const panel = new Panel(document.getElementById('screen-game'), {
+  onUndo: log('undo'),
+  onFlip: () => { flipped = !flipped; draw(); },
+  onDrawOffer: log('drawOffer'),
+  onResign: log('resign'),
+  onNewGame: log('newGame'),
+  onSettings: log('settings'),
+  onSelectPly: log('selectPly'),
+});
+
+const board = new BoardView(panel.boardContainer, {
+  onMoveIntent: log('moveIntent'),
+  onSquareClick: log('squareClick'),
+});
+
+function draw() {
+  board.render({
+    state,
+    selected: sq('c4'),
+    targets,
+    lastMove: { from: sq('d7'), to: sq('d5') },
+    checkSquare: null,
+    flipped,
+    interactive: true,
+  });
+  panel.render({
+    players: {
+      w: { name: 'Du', subtitle: 'Weiß' },
+      b: { name: 'Computer', subtitle: 'Schwarz · Stufe 3' },
+    },
+    bottomColor: flipped ? 'b' : 'w',
+    turn: 'w',
+    moveNumber: 9,
+    statusText: 'Weiß am Zug',
+    history: sans.map((san) => ({ san })),
+    currentPly: sans.length,
+    captured: { w: ['p', 'b'], b: ['P', 'B'] },
+    clocks: { w: 9 * 60000 + 12000, b: 8 * 60000 + 47000, running: 'w' },
+    opening: 'Italienische Partie',
+    canUndo: true,
+    gameOver: false,
+  });
+}
+draw();
+</script>
+</body>
+</html>

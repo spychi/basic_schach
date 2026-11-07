@@ -1,0 +1,53 @@
+:root {
+  /* Farben */
+  --paper: #F1EADC;
+  --ink: #141414;
+  --blue: #1F4E9C;
+  --yellow: #F2BE22;
+  --red: #C8291F;
+  --muted: #5A554C;
+  --row-alt: #E9E1D0;
+
+  /* Brett (per Einstellung überschreibbar) */
+  --square-light: var(--paper);
+  --square-dark: var(--blue);
+
+  /* Schrift */
+  --font: 'Jost', system-ui, sans-serif;
+  --fs-display: 64px;
+  --fs-h1: 42px;
+  --fs-section: 18px;
+  --fs-label: 14px;
+  --fs-body: 17px;
+  --fs-small: 13px;
+  --fs-clock: 28px;
+  --fs-coord: 12px;
+  --tracking-wide: 0.18em;
+
+  /* Linien */
+  --line: 3px;
+  --line-strong: 6px;
+
+  /* Abstände (8-px-Raster) */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --s7: 40px;
+  --s8: 48px;
+  --s9: 64px;
+
+  /* Bedienung */
+  --touch: 48px;
+  --focus-ring: 0 0 0 2px var(--ink), 0 0 0 6px var(--yellow);
+}
+
+@media (max-width: 899px) {
+  :root {
+    --fs-display: 44px;
+    --fs-h1: 28px;
+    --fs-clock: 22px;
+  }
+}

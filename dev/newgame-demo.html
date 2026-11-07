@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo: Neues Spiel</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/newgame.css">
+<link rel="stylesheet" href="../css/dialog.css">
+<style>
+  .demo-tools {
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3);
+    padding: var(--s4); background: var(--ink); color: var(--paper);
+  }
+  .demo-clock { font-size: var(--fs-clock); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .demo-clock span { padding: 0 var(--s3); }
+  .demo-clock .on { background: var(--yellow); color: var(--ink); }
+  .demo-out { font-size: var(--fs-small); max-width: 100%; word-break: break-all; }
+</style>
+</head>
+<body>
+<div class="demo-tools">
+  <button class="btn" id="b-promo" type="button">Umwandlung</button>
+  <button class="btn" id="b-over" type="button">Spielende</button>
+  <button class="btn" id="b-confirm" type="button">Bestätigen</button>
+  <button class="btn" id="b-toast" type="button">Toast</button>
+  <button class="btn" id="b-back" type="button">Zurück-Link ein/aus</button>
+  <div class="demo-clock" aria-label="Demo-Uhr"><span id="c-w">--</span><span id="c-b">--</span></div>
+  <button class="btn" id="b-switch" type="button">Zug (Uhr wechseln)</button>
+  <div class="demo-out" id="out"></div>
+</div>
+<div id="screen-newgame"></div>
+<div id="dialog-root"></div>
+<script type="module">
+  import { NewGameView } from '../js/ui/newgame-view.js';
+  import { choosePromotion, showGameOver, confirm, toast } from '../js/ui/dialog.js';
+  import { Clock } from '../js/ui/clock.js';
+
+  const out = document.getElementById('out');
+  const log = (v) => { out.textContent = typeof v === 'string' ? v : JSON.stringify(v); };
+
+  let canGoBack = true;
+  const view = new NewGameView(document.getElementById('screen-newgame'), {
+    onStart: (cfg) => log(cfg),
+    onBack: () => log('Zurück'),
+  });
+  view.show({ canGoBack });
+
+  document.getElementById('b-back').onclick = () => { canGoBack = !canGoBack; view.show({ canGoBack }); };
+  document.getElementById('b-promo').onclick = async () => log('Umwandlung: ' + await choosePromotion('w'));
+  document.getElementById('b-over').onclick = async () =>
+    log('Spielende: ' + await showGameOver({ title: 'SCHACHMATT', detail: 'Weiß gewinnt.' }));
+  document.getElementById('b-confirm').onclick = async () =>
+    log('Bestätigt: ' + await confirm({
+      title: 'Partie aufgeben?', text: 'Die aktuelle Partie geht verloren.',
+      okLabel: 'Aufgeben', cancelLabel: 'Weiterspielen',
+    }));
+  document.getElementById('b-toast').onclick = () => toast('Computer lehnt Remis ab');
+
+  const clock = new Clock({ initialMs: 15000, incrementMs: 2000 });
+  const cw = document.getElementById('c-w'), cb = document.getElementById('c-b');
+  clock.addEventListener('tick', (e) => {
+    cw.textContent = Clock.format(e.detail.w);
+    cb.textContent = Clock.format(e.detail.b);
+    cw.classList.toggle('on', e.detail.running === 'w');
+    cb.classList.toggle('on', e.detail.running === 'b');
+  });
+  clock.addEventListener('timeout', (e) => log('Zeit abgelaufen: ' + e.detail));
+  clock.start('w');
+  document.getElementById('b-switch').onclick = () => {
+    if (clock.running) clock.switchTo(clock.running === 'w' ? 'b' : 'w');
+    else clock.start('w');
+  };
+</script>
+</body>
+</html>

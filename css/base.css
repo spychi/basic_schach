@@ -1,0 +1,102 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--fs-body);
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1, h2, h3, p, ol, ul { margin: 0; }
+ol, ul { padding: 0; list-style: none; }
+button, input, select { font: inherit; color: inherit; }
+svg { display: block; }
+a { color: var(--blue); }
+a:hover { color: var(--ink); }
+
+[hidden] { display: none !important; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+:focus { outline: none; }
+:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+.section-title {
+  font-size: var(--fs-section);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+/* Knöpfe */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s3);
+  min-height: var(--touch);
+  padding: 0 var(--s5);
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--line) solid var(--ink);
+  border-radius: 0;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: left;
+}
+.btn:hover { background: var(--row-alt); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn svg { width: 22px; height: 22px; flex: 0 0 auto; }
+
+.btn--primary {
+  background: var(--red);
+  color: var(--paper);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.btn--primary:hover { background: #A9221A; color: var(--paper); }
+
+.btn--danger { color: var(--red); border-color: var(--red); }
+
+.btn--selected,
+.btn[aria-pressed="true"] { background: var(--yellow); }
+.btn--selected:hover,
+.btn[aria-pressed="true"]:hover { background: var(--yellow); }
+
+.btn--dark,
+.btn--dark:hover { background: var(--ink); color: var(--paper); }
+
+.icon-btn {
+  width: var(--touch);
+  height: var(--touch);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--line) solid var(--ink);
+  border-radius: 0;
+  cursor: pointer;
+}
+.icon-btn svg { width: 24px; height: 24px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
