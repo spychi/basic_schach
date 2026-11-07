@@ -20,6 +20,14 @@ docker compose up -d --build
 
 Dann <http://localhost:8080> öffnen. Der Container liefert die Dateien mit nginx aus. Stoppen mit `docker compose down`.
 
+### Fertiges Image aus GHCR
+
+```bash
+docker run -d -p 8080:80 --name basic_schach ghcr.io/spychi/basic_schach:latest
+```
+
+Jeder Push auf `main` baut das Image neu (`latest`), ein Tag wie `v1.0.0` erzeugt zusätzlich `1.0.0` und `1.0`. Das Image läuft auf amd64 und arm64.
+
 ## Tests
 
 ```bash
